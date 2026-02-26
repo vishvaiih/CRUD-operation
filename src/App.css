@@ -10,6 +10,17 @@
   border-radius: 10px;
 }
 
+.search{
+  height: 5vh;
+  width:30%;
+  border: 1px solid grey;
+  border-radius: 10px;
+  margin-bottom:20px;
+  display:flex;
+  justify-content: flex-end;
+}
+
+
 .todolist{
   text-align: center;
   font-size: 40px;

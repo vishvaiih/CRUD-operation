@@ -7,6 +7,10 @@ function ToDo() {
 
   const [editId, setEditId] = useState("");
 
+  const [search,setSearch] = useState("");
+
+  const [filterSerachTask,setFilterSearchTask] = useState([]);
+
   const handleAdd = () => {
     if (task.trim() === "") {
       return;
@@ -19,6 +23,7 @@ function ToDo() {
       task: task,
       status:"pending",
     };
+    
 
     setToDo([...toDo, newtask]);
 
@@ -74,6 +79,22 @@ function ToDo() {
 
   }
 
+  useEffect(() => {
+       const  filterSearchTask = toDo?.filter((itm) => itm.task.includes(search))
+       console.log(filterSearchTask,"/////")
+
+       if(search == ""){
+        setFilterSearchTask(toDo);
+       }else{
+        setFilterSearchTask(filterSearchTask);
+       }
+
+     
+       
+      
+
+  },[search,toDo])
+
   return (
     <div className="mainDiv">
       <p className="todolist">TODO LIST</p>
@@ -102,7 +123,15 @@ function ToDo() {
       )}
 
       <div className="tasklist">
-        {toDo?.map((itm) => (
+      <input
+        type="search"
+        className="search"
+        placeholder="Enter Task..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      ></input>
+
+        {filterSerachTask?.map((itm) => (
           <div className="sidebyside">
             <p style={{textDecoration: itm.status === "complete" ? "line-through" : "none" , color:itm.status === "complete" ? "green" : "red"}}>{itm.task}</p>
             <div className="buttons">
