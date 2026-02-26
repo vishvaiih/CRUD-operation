@@ -1,14 +1,13 @@
-import { useState } from 'react'
+
 
 import './App.css'
+import ToDo from './Pages/TODo'
 
 function App() {
 
   return (
     <>
-      <Box>
-        
-      </Box>
+      <ToDo/>
     </>
   )
 }
