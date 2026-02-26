@@ -1,3 +1,4 @@
+import { Pending } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 
 function ToDo() {
@@ -16,6 +17,7 @@ function ToDo() {
     const newtask = {
       id: Math.random() * Math.pow(5, 9),
       task: task,
+      status:"pending",
     };
 
     setToDo([...toDo, newtask]);
@@ -62,6 +64,16 @@ function ToDo() {
     setEditId("");
   }
 
+  const handleComplete = (id) => {
+    console.log("vvv")
+    const updateData = toDo?.map((itm) => 
+      itm.id === id ? {...itm, status: itm.status === "pending" ? "complete" : "pending"} : itm 
+  )
+  setToDo(updateData);
+  localStorage.setItem("task", JSON.stringify(updateData));
+
+  }
+
   return (
     <div className="mainDiv">
       <p className="todolist">TODO LIST</p>
@@ -85,16 +97,18 @@ function ToDo() {
           <button className="btn" onClick={() => handleUpdate()}>
             UPDATE
           </button>
+          
         </>
       )}
 
       <div className="tasklist">
         {toDo?.map((itm) => (
           <div className="sidebyside">
-            <p>{itm.task}</p>
+            <p style={{textDecoration: itm.status === "complete" ? "line-through" : "none" , color:itm.status === "complete" ? "green" : "red"}}>{itm.task}</p>
             <div className="buttons">
               <button onClick={() => handleDelete(itm.id)}>DELETE</button>
               <button onClick={() => handleEdit(itm.id)}>EDIT</button>
+              <button style={{ minWidth: "100px" }} onClick={() => handleComplete(itm.id)}>{itm.status === "pending" ? "COMPLETE" : "PENDING"}</button>
             </div>
           </div>
         ))}
