@@ -7,9 +7,9 @@ function ToDo() {
 
   const [editId, setEditId] = useState("");
 
-  const [search,setSearch] = useState("");
+  const [search, setSearch] = useState("");
 
-  const [filterSerachTask,setFilterSearchTask] = useState([]);
+  const [filterSerachTask, setFilterSearchTask] = useState([]);
 
   const handleAdd = () => {
     if (task.trim() === "") {
@@ -21,9 +21,8 @@ function ToDo() {
     const newtask = {
       id: Math.random() * Math.pow(5, 9),
       task: task,
-      status:"pending",
+      status: "pending",
     };
-    
 
     setToDo([...toDo, newtask]);
 
@@ -56,44 +55,39 @@ function ToDo() {
   const handleCancel = () => {
     setTask("");
     setEditId("");
-  }
+  };
 
   const handleUpdate = () => {
-    const updateData = toDo?.map((itm) => 
-        itm.id === editId ? {...itm, task: task} : itm
-    
-    )
+    const updateData = toDo?.map((itm) =>
+      itm.id === editId ? { ...itm, task: task } : itm
+    );
 
     setToDo(updateData);
     setTask("");
     setEditId("");
-  }
+  };
 
   const handleComplete = (id) => {
-    console.log("vvv")
-    const updateData = toDo?.map((itm) => 
-      itm.id === id ? {...itm, status: itm.status === "pending" ? "complete" : "pending"} : itm 
-  )
-  setToDo(updateData);
-  localStorage.setItem("task", JSON.stringify(updateData));
-
-  }
+    console.log("vvv");
+    const updateData = toDo?.map((itm) =>
+      itm.id === id
+        ? { ...itm, status: itm.status === "pending" ? "complete" : "pending" }
+        : itm
+    );
+    setToDo(updateData);
+    localStorage.setItem("task", JSON.stringify(updateData));
+  };
 
   useEffect(() => {
-       const  filterSearchTask = toDo?.filter((itm) => itm.task.includes(search))
-       console.log(filterSearchTask,"/////")
+    const filterSearchTask = toDo?.filter((itm) => itm.task.includes(search));
+    console.log(filterSearchTask, "/////");
 
-       if(search == ""){
-        setFilterSearchTask(toDo);
-       }else{
-        setFilterSearchTask(filterSearchTask);
-       }
-
-     
-       
-      
-
-  },[search,toDo])
+    if (search == "") {
+      setFilterSearchTask(toDo);
+    } else {
+      setFilterSearchTask(filterSearchTask);
+    }
+  }, [search, toDo]);
 
   return (
     <div className="mainDiv">
@@ -118,29 +112,47 @@ function ToDo() {
           <button className="btn" onClick={() => handleUpdate()}>
             UPDATE
           </button>
-          
         </>
       )}
 
       <div className="tasklist">
-      <input
-        type="search"
-        className="search"
-        placeholder="Enter Task..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      ></input>
+        <input
+          type="search"
+          className="search"
+          placeholder="Enter Task..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        ></input>
 
-        {filterSerachTask?.map((itm) => (
-          <div className="sidebyside">
-            <p style={{textDecoration: itm.status === "complete" ? "line-through" : "none" , color:itm.status === "complete" ? "green" : "red"}}>{itm.task}</p>
-            <div className="buttons">
-              <button onClick={() => handleDelete(itm.id)}>DELETE</button>
-              <button onClick={() => handleEdit(itm.id)}>EDIT</button>
-              <button style={{ minWidth: "100px" }} onClick={() => handleComplete(itm.id)}>{itm.status === "pending" ? "COMPLETE" : "PENDING"}</button>
+        {filterSerachTask?.length === 0 ? (
+          <p style={{fontSize:"20px", textAlign:"center",color:"grey"}}>Task not found:</p>
+        ):(
+          filterSerachTask?.map((itm) => (
+            <div className="sidebyside">
+              <p
+                style={{
+                  textDecoration:
+                    itm.status === "complete" ? "line-through" : "none",
+                  color: itm.status === "complete" ? "green" : "red",
+                }}
+              >
+                {itm.task}
+              </p>
+              <div className="buttons">
+                <button onClick={() => handleDelete(itm.id)}>DELETE</button>
+                <button onClick={() => handleEdit(itm.id)}>EDIT</button>
+                <button
+                  style={{ minWidth: "100px" }}
+                  onClick={() => handleComplete(itm.id)}
+                >
+                  {itm.status === "pending" ? "COMPLETE" : "PENDING"}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
+
+      
       </div>
     </div>
   );
